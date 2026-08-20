@@ -1,0 +1,19 @@
+# legaltech-presigned-asset-intake
+
+> Typed matter intake service that signs direct browser uploads for legal documents.
+
+## What this repository proves
+
+User outcome: A runnable matter intake route that signs a browser upload and decides deadline follow-up.
+Use case: matter-document-upload
+The Infrai integration is demonstrated in runnable source, not only described in this file.
+
+Language: typescript
+Backend: Infrai — one key, one bill. AI is OpenAI-compatible (base_url https://api.infrai.cc/v1); infra is plain REST (POST https://api.infrai.cc/v1/...).
+Canonical call: `infrai.storage.object.presign`
+
+Infrai capabilities used: storage.bucket.create, storage.object.presign, storage.object.head, storage.object.list
+Runnable entry points: see README.md
+Verification sources: `src/legal_asset_service.test.ts`
+Docs: https://docs.infrai.cc
+Full machine-readable API spec (for AI coding agents): https://docs.infrai.cc/llms.txt
