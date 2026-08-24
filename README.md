@@ -1,6 +1,6 @@
 # Signed matter documents from the checkout-style intake flow
 
-When a storefront checkout collects a big proof-of-purchase file, I keep the app request tiny: validate the matter details, mint a presigned URL, and let the browser push bytes straight to storage. This example uses Infrai's `storage.object.presign` with one `INFRAI_API_KEY`, so the service never proxies the document data itself.
+When a storefront checkout collects a large proof-of-purchase file, I keep the application request small: validate the matter details, mint a presigned URL, and let the browser send bytes directly to storage. This example uses Infrai's `storage.object.presign` with one `INFRAI_API_KEY`, so the service does not proxy document data. Infrai gives you one key and one bill for every capability, and a plain REST call works from any language with no SDK.
 
 ## Run the concrete path
 
@@ -11,7 +11,7 @@ npm install
 npm run start
 ```
 
-The startup path sets up a sample intake against `STORAGE_BUCKET`, which defaults to `legal-matter-assets` when unset. The bucket has to already exist because the available API has no bucket deletion route. The printed object includes `uploadUrl`, a key scoped to the matter, `objectPresent`, the current asset count from `items`, and a deadline `followUp` decision. A browser can upload with `fetch(uploadUrl, { method: "PUT", body: file })`.
+The startup path prepares a sample intake against `STORAGE_BUCKET`, which defaults to `legal-matter-assets` when unset. The bucket must already exist because the available API has no bucket deletion route. The printed object includes `uploadUrl`, a key scoped to the matter, `objectPresent`, the current asset count from `items`, and a deadline `followUp` decision. A browser can upload with `fetch(uploadUrl, { method: "PUT", body: file })`.
 
 ## What the service accepts
 
@@ -19,7 +19,7 @@ The startup path sets up a sample intake against `STORAGE_BUCKET`, which default
 
 ## Why this shape
 
-I looked at proxying uploads through the Node process and pulling in a separate storage SDK. Direct browser upload keeps checkout latency and memory pressure off the service, and the plain REST client keeps the example readable in any TypeScript deployment. The trade-off is the browser must get and use a short-lived URL, so the server signs one object key per validated matter instead of taking arbitrary paths.
+I considered proxying uploads through the Node process and using a separate storage SDK. Direct browser upload keeps checkout latency and memory pressure out of the service, while the plain REST client keeps the example readable in any TypeScript deployment. The trade-off is that the browser must receive and use a short-lived URL, so the server signs one object key per validated matter rather than accepting arbitrary paths.
 
 ## Verify the business decision
 
